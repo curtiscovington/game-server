@@ -102,6 +102,7 @@ func (s *Server) Listen() {
 			log.Println("Added new client")
 			s.clients[c.id] = c
 			log.Println("Now", len(s.clients), "clients connected.")
+			c.Write(&Message{"connected", c.id, Pos{10, 10}})
 			// s.sendPastMessages(c)
 
 		// del a client

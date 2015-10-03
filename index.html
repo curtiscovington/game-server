@@ -6,6 +6,7 @@
 
 <script type="text/javascript">
 	ws = new WebSocket("ws://dev.zalkit.com:9000/connect");
+	// ws = new WebSocket("ws://localhost:9000/connect");
 	ws.onopen = onOpen;
 	ws.onerror = onError;
 	ws.onmessage = onMessage;
@@ -21,6 +22,7 @@
 
 	function onMessage(msg) {
 		// to be called when a message is recieved from the server
+		console.log(msg);
 	}
 </script>
 	
