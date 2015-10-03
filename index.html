@@ -4,9 +4,10 @@
 	<title></title>
 </head>
 	<script type="text/javascript">
-	ws = new WebSocket("ws://localhost:9000/connect");
+	ws = new WebSocket("ws://dev.zalkit.com:9000/connect");
 	ws.onopen = onOpen;
 	ws.onerror = onError;
+	ws.onmessage = onMessage;
 
 
 	function onOpen () {
@@ -15,6 +16,10 @@
 
 	function onError () {
 		document.getElementById("status").innerHTML = "Error.";
+	}
+
+	function onMessage(msg) {
+		// to be called when a message is recieved from the server
 	}
 	</script>
 <body>
