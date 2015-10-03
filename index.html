@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title></title>
+</head>
+	<script type="text/javascript">
+	ws = new WebSocket("ws://localhost:9000/connect");
+	ws.onopen = onOpen;
+	ws.onerror = onError;
+
+
+	function onOpen () {
+		document.getElementById("status").innerHTML = "Connected.";
+	}
+
+	function onError () {
+		document.getElementById("status").innerHTML = "Error.";
+	}
+	</script>
+<body>
+<span id="status"></span>
+</body>
+</html>
