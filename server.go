@@ -104,7 +104,7 @@ func (s *Server) Listen() {
 			log.Println("Now", len(s.clients), "clients connected.")
 			c.Write(&Message{"connected", c.id, Pos{10, 10}})
 			// s.sendPastMessages(c)
-
+			s.SendAll(&Message{"new-player", c.id, Pos{10, 10}})
 		// del a client
 		case c := <-s.delCh:
 			log.Println("Delete client")
