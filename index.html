@@ -1,9 +1,10 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<title></title>
+	<title>Game</title>
 </head>
-	<script type="text/javascript">
+
+<script type="text/javascript">
 	ws = new WebSocket("ws://dev.zalkit.com:9000/connect");
 	ws.onopen = onOpen;
 	ws.onerror = onError;
@@ -21,8 +22,10 @@
 	function onMessage(msg) {
 		// to be called when a message is recieved from the server
 	}
-	</script>
+</script>
+	
 <body>
-<span id="status"></span>
+<span id="status"></span><hr />
+<script src="game.js"></script>
 </body>
 </html>
