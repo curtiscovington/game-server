@@ -21,7 +21,9 @@
 	}
 
 	function onMessage(msg) {
-		// to be called when a message is recieved from the server
+		var locations = JSON.parse(msg.data);
+		
+		loadPlayers(locations)
 		console.log(msg);
 	}
 </script>

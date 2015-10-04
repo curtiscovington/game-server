@@ -2,6 +2,7 @@ var cw = 10;
 var w = 640;
 var h = 640;
 var player = { id: getRandom(50), x: get10(w), y: get10(h), speed: 10 };
+var players;
 var canvas = document.createElement("canvas");
 var ctx = canvas.getContext("2d");
 canvas.width = w;
@@ -25,11 +26,11 @@ function get10(n)
 	return (Math.floor(getRandom(n)/10)) * 10
 }
 
-function drawPlayer()
+function drawPlayer(x, y)
 {
 	ctx.beginPath();
 	ctx.fillStyle = "black";
-	ctx.arc((player.x + cw / 2), (player.y + cw / 2), cw / 2, 0, 2 * Math.PI + 1);
+	ctx.arc((x + cw / 2), (y + cw / 2), cw / 2, 0, 2 * Math.PI + 1);
 	ctx.fill();
 }
 function paint()
@@ -42,7 +43,7 @@ function paint()
 	ctx.fillText("ID: " + player.id +" Location: " + player.x + ", " +player.y, 5, h - 5);
 	
 	update();
-	drawPlayer();
+	//drawPlayer();
 }
 
 addEventListener("keydown", function (e) {
@@ -78,7 +79,7 @@ function update()
 function transmit()
 {
 	var msg = {
-    type: 	"player location",
+    type: 	"location",
     id:   	player.id,
     locX: 	player.x, 
 	locY:	player.y
@@ -86,3 +87,12 @@ function transmit()
 	
 	ws.send(JSON.stringify(msg));
 }
+
+function loadPlayers(msg)
+{
+	for(i = 0; i < msg.length; ++i)
+	{
+		drawPlayer(msg[i][4][0], msg[i][4][1]);
+	}
+}
+
