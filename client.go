@@ -11,8 +11,13 @@ const channelBufSize = 100
 
 var maxId int = 0
 
+type Pos struct {
+	x int
+	y int
+}
 type Client struct {
 	id     int
+	pos    Pos
 	ws     *websocket.Conn
 	server *Server
 	ch     chan *Message
@@ -33,7 +38,8 @@ func NewClient(ws *websocket.Conn, server *Server) *Client {
 	ch := make(chan *Message, channelBufSize)
 	doneCh := make(chan bool)
 
-	return &Client{maxId, ws, server, ch, doneCh}
+	pos := Pos{10, 10}
+	return &Client{maxId, pos, ws, server, ch, doneCh}
 }
 
 func (c *Client) Conn() *websocket.Conn {
