@@ -1,7 +1,7 @@
-var cw = 10;
+var cw = 20;
 var w = 640;
 var h = 640;
-var player = { id: getRandom(50), x: get10(w), y: get10(h), speed: 10 };
+var player = { id: getRandom(50), x: get10(w), y: get10(h), speed: cw };
 var players;
 var canvas = document.createElement("canvas");
 var ctx = canvas.getContext("2d");
@@ -9,6 +9,46 @@ canvas.width = w;
 canvas.height = h;
 document.body.appendChild(canvas);
 var keysDown = {};
+var map = [
+	['g','g','g','g','g','g','g','g','g','g','g','g','g','g','g','g','g','g','g','g','g','g','g','g','g','g','g','g','g','g','g','g'],
+	['g','g','g','g','g','g','g','g','g','g','g','g','g','g','g','g','g','g','g','g','g','g','g','g','g','g','g','g','g','g','g','g'],
+	['g','r','r','r','g','r','r','r','g','g','r','r','g','r','r','r','g','g','g','g','g','g','g','g','g','g','g','g','g','g','g','g'],
+	['g','g','r','g','g','r','g','g','g','r','g','g','g','g','r','g','g','g','g','g','g','g','g','g','g','g','g','g','g','g','g','g'],
+	['g','g','r','g','g','r','r','g','g','r','r','r','g','g','r','g','g','g','g','g','g','g','g','g','g','g','g','g','g','g','g','g'],
+	['g','g','r','g','g','r','g','g','g','g','g','r','g','g','r','g','g','g','g','g','g','g','g','g','g','g','g','g','g','g','g','g'],
+	['g','g','r','g','g','r','r','r','g','r','r','g','g','g','r','g','g','g','g','g','g','g','g','g','g','g','g','g','g','g','g','g'],
+	['g','g','g','g','g','g','g','g','g','g','g','g','g','g','g','g','g','g','g','g','g','g','g','g','g','g','g','g','g','g','g','g'],
+	['g','g','g','g','g','g','g','g','g','g','g','g','g','g','g','g','g','g','g','g','g','g','g','g','g','g','g','g','g','g','g','g'],
+	['g','g','g','g','g','g','g','g','g','g','g','g','g','g','g','g','g','g','g','g','g','g','g','g','g','g','g','g','g','g','g','g'],
+	['g','g','g','g','g','g','g','g','g','g','g','g','g','g','g','g','g','g','g','g','g','g','g','g','g','g','g','g','g','g','g','g'],
+	['g','g','g','g','g','g','g','g','g','g','g','g','g','g','g','g','g','g','g','g','g','g','g','g','g','g','g','g','g','g','g','g'],
+	['g','g','g','g','g','g','g','g','g','g','r','g','r','g','g','r','g','g','r','r','g','g','g','g','g','g','g','g','g','g','g','g'],
+	['g','g','g','g','g','g','g','g','g','g','r','r','r','g','r','g','r','g','r','g','r','g','g','g','g','g','g','g','g','g','g','g'],
+	['g','g','g','g','g','g','g','g','g','g','r','r','r','g','r','g','r','g','r','g','r','g','g','g','g','g','g','g','g','g','g','g'],
+	['g','g','g','g','g','g','g','g','g','g','r','g','r','g','r','r','r','g','r','r','g','g','g','g','g','g','g','g','g','g','g','g'],
+	['g','g','g','g','g','g','g','g','g','g','r','g','r','g','r','g','r','g','r','g','g','g','g','g','g','g','g','g','g','g','g','g'],
+	['g','g','g','g','g','g','g','g','g','g','g','g','g','g','g','g','g','g','g','g','g','g','g','g','g','g','g','g','g','g','g','g'],
+	['g','g','g','g','g','g','g','g','g','g','g','g','g','g','g','g','g','g','g','g','g','g','g','g','g','g','g','g','g','g','g','g'],
+	['g','g','g','g','g','g','g','g','g','g','g','g','g','g','g','g','g','g','g','g','g','g','g','g','g','g','g','g','g','g','g','g'],
+	['g','g','g','g','g','g','g','g','g','g','g','g','g','g','g','g','g','g','g','g','g','g','g','g','g','g','g','g','g','g','g','g'],
+	['g','g','g','g','g','g','g','g','g','g','r','r','r','g','r','r','r','g','r','g','g','g','r','r','r','g','g','r','r','g','g','g'],
+	['g','g','g','g','g','g','g','g','g','g','g','r','g','g','g','r','g','g','r','g','g','g','r','g','g','g','r','g','g','g','g','g'],
+	['g','g','g','g','g','g','g','g','g','g','g','r','g','g','g','r','g','g','r','g','g','g','r','r','g','g','r','r','r','g','g','g'],
+	['g','g','g','g','g','g','g','g','g','g','g','r','g','g','g','r','g','g','r','g','g','g','r','g','g','g','g','g','r','g','g','g'],
+	['g','g','g','g','g','g','g','g','g','g','g','r','g','g','r','r','r','g','r','r','r','g','r','r','r','g','r','r','g','g','g','g'],
+	['g','g','g','g','g','g','g','g','g','g','g','g','g','g','g','g','g','g','g','g','g','g','g','g','g','g','g','g','g','g','g','g'],
+	['g','g','g','g','g','g','g','g','g','g','g','g','g','g','g','g','g','g','g','g','g','g','g','g','g','g','g','g','g','g','g','g'],
+	['g','g','g','g','g','g','g','g','g','g','g','g','g','g','g','g','g','g','g','g','g','g','g','g','g','g','g','g','g','g','g','g'],
+	['g','g','g','g','g','g','g','g','g','g','g','g','g','g','g','g','g','g','g','g','g','g','g','g','g','g','g','g','g','g','g','g'],
+	['g','g','g','g','g','g','g','g','g','g','g','g','g','g','g','g','g','g','g','g','g','g','g','g','g','g','g','g','g','g','g','g'],
+	['g','g','g','g','g','g','g','g','g','g','g','g','g','g','g','g','g','g','g','g','g','g','g','g','g','g','g','g','g','g','g','g'],
+	['g','g','g','g','g','g','g','g','g','g','g','g','g','g','g','g','g','g','g','g','g','g','g','g','g','g','g','g','g','g','g','g'],
+	['g','g','g','g','g','g','g','g','g','g','g','g','g','g','g','g','g','g','g','g','g','g','g','g','g','g','g','g','g','g','g','g'],
+	['g','g','g','g','g','g','g','g','g','g','g','g','g','g','g','g','g','g','g','g','g','g','g','g','g','g','g','g','g','g','g','g'],
+	['g','g','g','g','g','g','g','g','g','g','g','g','g','g','g','g','g','g','g','g','g','g','g','g','g','g','g','g','g','g','g','g'],
+	['g','g','g','g','g','g','g','g','g','g','g','g','g','g','g','g','g','g','g','g','g','g','g','g','g','g','g','g','g','g','g','g'],
+	['g','g','g','g','g','g','g','g','g','g','g','g','g','g','g','g','g','g','g','g','g','g','g','g','g','g','g','g','g','g','g','g'],
+];
 
 function init()
 {
@@ -23,9 +63,15 @@ function getRandom(n)
 }
 function get10(n)
 {
-	return (Math.floor(getRandom(n)/10)) * 10
+	return (Math.floor(getRandom(n)/cw)) * cw
 }
-
+function drawGuess()
+{
+	ctx.beginPath();
+	ctx.strokeStyle = "grey";
+	ctx.arc((player.x + cw / 2), (player.y + cw / 2), cw / 2, 0, 2 * Math.PI + 1);
+	ctx.stroke();
+}
 function drawPlayer(x, y)
 {
 	ctx.beginPath();
@@ -42,14 +88,34 @@ function paint()
 	ctx.fillStyle = "red";
 	ctx.fillText("ID: " + player.id +" Location: " + player.x + ", " +player.y, 5, h - 5);
 	
+	paintTiles();
+	
 	update();
-	//drawPlayer();
+}
+function paintTiles()
+{
+	for(i = 0; i < h/cw; i++)
+	{
+		for(j = 0; j < w/cw; j++)
+		{
+			switch(map[i][j])
+			{
+				case 'r':
+					ctx.fillStyle = "#FFE4C4";
+					break;
+				case 'g':
+					ctx.fillStyle = "#8FBC8F";
+					break;
+			}
+			ctx.fillRect(j*cw, i*cw, cw, cw);
+		}
+	}
+	
 }
 
 addEventListener("keydown", function (e) {
 	keysDown[e.keyCode] = true;
 }, false);
-
 addEventListener("keyup", function (e) {
 	delete keysDown[e.keyCode];
 }, false);
@@ -74,6 +140,7 @@ function update()
 	}
 	
 	transmit();
+	drawGuess();
 }
 
 function transmit()
