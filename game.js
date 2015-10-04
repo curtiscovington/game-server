@@ -1,7 +1,7 @@
-var player = { x: 250, y: 250 };
 var cw = 10;
 var w = 640;
 var h = 640;
+var player = { id: getRandom(50), x: get10(w), y: get10(h), speed: 10 };
 var canvas = document.createElement("canvas");
 var ctx = canvas.getContext("2d");
 canvas.width = w;
@@ -15,6 +15,15 @@ function init()
 	game_loop = setInterval(paint, 60);
 }
 init();
+
+function getRandom(n)
+{
+	return Math.floor(Math.random() * n);
+}
+function get10(n)
+{
+	return (Math.floor(getRandom(n)/10)) * 10
+}
 
 function drawPlayer()
 {
@@ -30,7 +39,7 @@ function paint()
 	ctx.strokeStyle = "lime";
 	ctx.strokeRect(0, 0, w, h);
 	ctx.fillStyle = "red";
-	ctx.fillText("Test", 5, h - 5);
+	ctx.fillText("ID: " + player.id +" Location: " + player.x + ", " +player.y, 5, h - 5);
 	
 	update();
 	drawPlayer();
@@ -62,4 +71,18 @@ function update()
 		if(!(player.x >= h - cw))
 		player.x += 1 * cw;
 	}
+	
+	transmit();
+}
+
+function transmit()
+{
+	var msg = {
+    type: 	"player location",
+    id:   	player.id,
+    locX: 	player.x, 
+	locY:	player.y
+	};	
+	
+	ws.send(JSON.stringify(msg));
 }
